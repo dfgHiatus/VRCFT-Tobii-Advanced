@@ -1,6 +1,6 @@
 ﻿namespace VRCFT_Tobii_Advanced.Tobii;
 
-internal interface IWearable : IDisposable
+internal interface ITobiiDataSource : IDisposable
 {
     void Subscribe();
     void Unsubscribe();

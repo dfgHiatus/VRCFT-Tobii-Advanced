@@ -4,13 +4,13 @@ using VRCFaceTracking.Core.Types;
 
 namespace VRCFT_Tobii_Advanced.Tobii;
 
-public class WearableConsumer : IWearable
+public class DesktopConsumer : ITobiiDataSource
 {
     private readonly nint _device;
     private bool _isSubscribed;
     private EyeData _eyeData;
 
-    public WearableConsumer(nint device)
+    public DesktopConsumer(nint device)
     {
         _device = device;
     }
@@ -20,10 +20,10 @@ public class WearableConsumer : IWearable
         var ptr = GCHandle.Alloc(this);
 
         var res =
-            Interop.tobii_wearable_consumer_data_subscribe(_device, UpdateData, GCHandle.ToIntPtr(ptr));
+            Interop.tobii_gaze_point_subscribe(_device, UpdateData, GCHandle.ToIntPtr(ptr));
         if (res != tobii_error_t.TOBII_ERROR_NO_ERROR)
         {
-            throw new Exception("Subscribe to Tobii device: " + res);
+            throw new Exception("Subscribed to tobii device: " + res);
         }
 
         _isSubscribed = true;
@@ -33,10 +33,10 @@ public class WearableConsumer : IWearable
     {
         _isSubscribed = false;
 
-        var res = Interop.tobii_wearable_consumer_data_unsubscribe(_device);
+        var res = Interop.tobii_gaze_point_unsubscribe(_device);
         if (res != tobii_error_t.TOBII_ERROR_NO_ERROR)
         {
-            throw new Exception("Unsubscribe from Tobii device: " + res);
+            throw new Exception("Unsubscribed from tobii device: " + res);
         }
     }
 
@@ -66,28 +66,27 @@ public class WearableConsumer : IWearable
         return _eyeData;
     }
 
-    private static void UpdateData(ref tobii_wearable_consumer_data_t data, nint userData)
+    private static void UpdateData(ref tobii_gaze_point_t data, nint userData)
     {
+        var validity = data.validity == tobii_validity_t.TOBII_VALIDITY_VALID;
+        var dir = new Vector2(
+                Math.Clamp(data.position.x, 0f, 1f),
+                Math.Clamp(1 - data.position.y, 0f, 1f));
+
         var left = new EyeData.Eye
         {
-            GlazeDirectionIsValid = data.gaze_direction_combined_validity == tobii_validity_t.TOBII_VALIDITY_VALID,
-            GlazeDirection = new Vector2(-data.gaze_direction_combined_normalized_xyz.x,
-                data.gaze_direction_combined_normalized_xyz.y),
-            IsBlinkingIsValid = data.left.blink_validity == tobii_validity_t.TOBII_VALIDITY_VALID,
-            IsBlink = data.left.blink == tobii_state_bool_t.TOBII_STATE_BOOL_TRUE,
+            GlazeDirectionIsValid = validity,
+            GlazeDirection = dir,
         };
 
         var right = new EyeData.Eye
         {
-            GlazeDirectionIsValid = data.gaze_direction_combined_validity == tobii_validity_t.TOBII_VALIDITY_VALID,
-            GlazeDirection = new Vector2(-data.gaze_direction_combined_normalized_xyz.x,
-                data.gaze_direction_combined_normalized_xyz.y),
-            IsBlinkingIsValid = data.right.blink_validity == tobii_validity_t.TOBII_VALIDITY_VALID,
-            IsBlink = data.right.blink == tobii_state_bool_t.TOBII_STATE_BOOL_TRUE,
+            GlazeDirectionIsValid = validity,
+            GlazeDirection = dir,
         };
 
         var target = GCHandle.FromIntPtr(userData).Target;
-        if (target is WearableConsumer dev)
+        if (target is DesktopConsumer dev)
         {
             dev._eyeData = new EyeData
             {

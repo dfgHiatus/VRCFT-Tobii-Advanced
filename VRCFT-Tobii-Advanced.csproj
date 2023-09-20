@@ -10,14 +10,8 @@
         <PackageProjectUrl>https://github.com/ghostiam/VRCFT-Tobii-Advanced</PackageProjectUrl>
         <PackageLicenseUrl>https://github.com/ghostiam/VRCFT-Tobii-Advanced/blob/main/LICENSE</PackageLicenseUrl>
         <RepositoryUrl>https://github.com/ghostiam/VRCFT-Tobii-Advanced</RepositoryUrl>
+        <Platforms>AnyCPU;x64</Platforms>
     </PropertyGroup>
-
-    <ItemGroup>
-      <Reference Include="VRCFaceTracking.Core">
-        <HintPath>Libs\VRCFaceTracking.Core.dll</HintPath>
-        <Private>False</Private>
-      </Reference>
-    </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.0" />
@@ -36,5 +30,11 @@
       <AdditionalFiles Include="tobii_stream_engine.dll">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </AdditionalFiles>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="VRCFaceTracking.Core">
+        <HintPath>..\..\..\..\..\Program Files\WindowsApps\96ba052f-0948-44d8-86c4-a0212e4ae047_5.1.1.0_x64__d7rcq4vxghz0r\VRCFaceTracking.Core.dll</HintPath>
+      </Reference>
     </ItemGroup>
 </Project>

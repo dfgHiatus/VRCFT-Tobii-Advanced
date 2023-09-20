@@ -33,7 +33,7 @@ public class Api : IDisposable
         var res = Interop.tobii_api_create(out _api, tobiiLog);
         if (res != tobii_error_t.TOBII_ERROR_NO_ERROR)
         {
-            throw new Exception("Create API: " + res);
+            throw new Exception("Created API: " + res);
         }
     }
 
@@ -42,7 +42,7 @@ public class Api : IDisposable
         var res = Interop.tobii_enumerate_local_device_urls(_api, out var urls);
         if (res != tobii_error_t.TOBII_ERROR_NO_ERROR)
         {
-            throw new Exception("Enumerate devices: " + res);
+            throw new Exception("Enumerated devices: " + res);
         }
 
         return urls;

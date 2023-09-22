@@ -27,7 +27,7 @@ public class Device : IDisposable
                 throw new Exception("Failed to create tobii device: " + res);
             }
 
-            isWearable = DetermineIfWearableOrDesktop(_device);
+            isWearable = DetermineIfWearable(_device);
 
             if (licenseResults.Count > 0 &&
                 licenseResults[0] == tobii_license_validation_result_t.TOBII_LICENSE_VALIDATION_RESULT_OK)
@@ -50,7 +50,7 @@ public class Device : IDisposable
                 throw new Exception("Failed to create tobii device: " + res);
             }
 
-            isWearable = DetermineIfWearableOrDesktop(_device);
+            isWearable = DetermineIfWearable(_device);
         }
 
         logger.LogInformation("Subscribed to consumer data.");
@@ -61,27 +61,16 @@ public class Device : IDisposable
         _wearable.Subscribe();
     }
 
-    private bool DetermineIfWearableOrDesktop(nint _device)
+    private bool DetermineIfWearable(nint _device)
     {
-        var res = Interop.tobii_capability_supported(
-            _device,
-            tobii_capability_t.TOBII_CAPABILITY_COMPOUND_STREAM_WEARABLE_EYE_OPENNESS,
-            out var supportsWearableEyeOpeness);
+        var res = Interop.tobii_get_device_info(_device, out var info);
         if (res != tobii_error_t.TOBII_ERROR_NO_ERROR || _device == nint.Zero)
         {
             throw new Exception("Failed to get device info: " + res);
         }
 
-        res = Interop.tobii_capability_supported(
-            _device,
-            tobii_capability_t.TOBII_CAPABILITY_COMPOUND_STREAM_WEARABLE_USER_POSITION_GUIDE_XY,
-            out var supportsWearableEyePosition);
-        if (res != tobii_error_t.TOBII_ERROR_NO_ERROR || _device == nint.Zero)
-        {
-            throw new Exception("Failed to get device info: " + res);
-        }
-
-        return supportsWearableEyeOpeness && supportsWearableEyePosition;
+        // This will either be HMD or Peripheral
+        return info.integration_type == "HMD";
     }
 
     private void GetCapabilities(ILogger logger, nint _device)

@@ -23,7 +23,7 @@ public class DesktopAdvanced : ITobiiDataSource
             Interop.tobii_gaze_data_subscribe(_device, UpdateData, GCHandle.ToIntPtr(ptr));
         if (res != tobii_error_t.TOBII_ERROR_NO_ERROR)
         {
-            throw new Exception("Subscribed to Tobii device: " + res);
+            throw new Exception("Could not subscribe to tobii device: " + res);
         }
 
         _isSubscribed = true;
@@ -36,7 +36,7 @@ public class DesktopAdvanced : ITobiiDataSource
         var res = Interop.tobii_gaze_data_unsubscribe(_device);
         if (res != tobii_error_t.TOBII_ERROR_NO_ERROR)
         {
-            throw new Exception("Unsubscribed from Tobii device: " + res);
+            throw new Exception("Could not unsubscribe from tobii device: " + res);
         }
     }
 
@@ -72,8 +72,8 @@ public class DesktopAdvanced : ITobiiDataSource
         {
             GlazeDirectionIsValid = dataLeft.gaze_point_validity == tobii_validity_t.TOBII_VALIDITY_VALID,
             GlazeDirection = new Vector2(
-                Math.Clamp(dataLeft.gaze_point_on_display_normalized_xy.x, 0f, 1f),
-                Math.Clamp(1f - dataLeft.gaze_point_on_display_normalized_xy.y, 0f, 1f)),
+                Math.Clamp((2f * dataLeft.gaze_point_on_display_normalized_xy.x) - 1f, -1f, 1f), // 0..1 to  -1..1
+                Math.Clamp((-2f * dataLeft.gaze_point_on_display_normalized_xy.y) + 1f, -1f, 1f)), // 1..0 to  -1..1
             PupilDiameterIsValid = dataLeft.pupil_validity == tobii_validity_t.TOBII_VALIDITY_VALID,
             PupilDiameterMm = dataLeft.pupil_diameter_mm
         };
@@ -83,8 +83,8 @@ public class DesktopAdvanced : ITobiiDataSource
         {
             GlazeDirectionIsValid = dataRight.gaze_point_validity == tobii_validity_t.TOBII_VALIDITY_VALID,
             GlazeDirection = new Vector2(
-                Math.Clamp(dataRight.gaze_point_on_display_normalized_xy.x, 0f, 1f),
-                Math.Clamp(1f - dataRight.gaze_point_on_display_normalized_xy.y, 0f, 1f)),
+                Math.Clamp(dataRight.gaze_point_on_display_normalized_xy.x, -1f, 1f),
+                Math.Clamp(1f - dataRight.gaze_point_on_display_normalized_xy.y, -1f, 1f)),
             PupilDiameterIsValid = dataRight.pupil_validity == tobii_validity_t.TOBII_VALIDITY_VALID,
             PupilDiameterMm = dataRight.pupil_diameter_mm
         };

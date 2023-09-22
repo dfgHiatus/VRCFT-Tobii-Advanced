@@ -23,7 +23,7 @@ public class DesktopConsumer : ITobiiDataSource
             Interop.tobii_gaze_point_subscribe(_device, UpdateData, GCHandle.ToIntPtr(ptr));
         if (res != tobii_error_t.TOBII_ERROR_NO_ERROR)
         {
-            throw new Exception("Subscribed to tobii device: " + res);
+            throw new Exception("Could not subscribe to tobii device: " + res);
         }
 
         _isSubscribed = true;
@@ -36,7 +36,7 @@ public class DesktopConsumer : ITobiiDataSource
         var res = Interop.tobii_gaze_point_unsubscribe(_device);
         if (res != tobii_error_t.TOBII_ERROR_NO_ERROR)
         {
-            throw new Exception("Unsubscribed from tobii device: " + res);
+            throw new Exception("Could not unsubscribe from tobii device: " + res);
         }
     }
 
@@ -70,8 +70,8 @@ public class DesktopConsumer : ITobiiDataSource
     {
         var validity = data.validity == tobii_validity_t.TOBII_VALIDITY_VALID;
         var dir = new Vector2(
-                Math.Clamp(data.position.x, 0f, 1f),
-                Math.Clamp(1 - data.position.y, 0f, 1f));
+                Math.Clamp((2f * data.position.x) -1f, -1f, 1f), // 0..1 to -1..1
+                Math.Clamp((-2f * data.position.y) + 1f, -1f, 1f)); // 1..0 to -1..1
 
         var left = new EyeData.Eye
         {

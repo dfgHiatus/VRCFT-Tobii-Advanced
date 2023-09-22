@@ -87,7 +87,8 @@ public class TobiiTrackingModule : ExtTrackingModule
 
         var data = _device.GetEyeData();
 
-        UnifiedTracking.Data.Eye.Left.Gaze = data.Left.GlazeDirectionIsValid ? data.Left.GlazeDirection : Vector2.zero;
+        UnifiedTracking.Data.Eye.Left.Gaze = 
+            data.Left.GlazeDirectionIsValid ? data.Left.GlazeDirection : Vector2.zero;
         UnifiedTracking.Data.Eye.Right.Gaze =
             data.Right.GlazeDirectionIsValid ? data.Right.GlazeDirection : Vector2.zero;
 

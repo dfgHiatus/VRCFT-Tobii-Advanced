@@ -33,7 +33,7 @@ public class Api : IDisposable
         var res = Interop.tobii_api_create(out _api, tobiiLog);
         if (res != tobii_error_t.TOBII_ERROR_NO_ERROR)
         {
-            throw new Exception("Created API: " + res);
+            throw new Exception("Unable to create API: " + res);
         }
     }
 
@@ -42,7 +42,7 @@ public class Api : IDisposable
         var res = Interop.tobii_enumerate_local_device_urls(_api, out var urls);
         if (res != tobii_error_t.TOBII_ERROR_NO_ERROR)
         {
-            throw new Exception("Enumerated devices: " + res);
+            throw new Exception("Unable to enumerate devices: " + res);
         }
 
         return urls;
@@ -63,7 +63,7 @@ public class Api : IDisposable
         var res = Interop.tobii_api_destroy(_api);
         if (res != tobii_error_t.TOBII_ERROR_NO_ERROR)
         {
-            throw new Exception("Destroy API: " + res);
+            throw new Exception("Failed to destroy API: " + res);
         }
     }
 }

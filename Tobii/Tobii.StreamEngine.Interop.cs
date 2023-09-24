@@ -618,11 +618,6 @@ namespace Tobii.StreamEngine
             return result;
         }
 
-        internal static tobii_error_t tobii_gaze_data_subscribe(nint device)
-        {
-            throw new NotImplementedException();
-        }
-
         #endregion
     }
 

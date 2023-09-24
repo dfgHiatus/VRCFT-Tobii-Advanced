@@ -73,13 +73,7 @@ public class DesktopConsumer : ITobiiDataSource
                 Math.Clamp((2f * data.position.x) -1f, -1f, 1f), // 0..1 to -1..1
                 Math.Clamp((-2f * data.position.y) + 1f, -1f, 1f)); // 1..0 to -1..1
 
-        var left = new EyeData.Eye
-        {
-            GlazeDirectionIsValid = validity,
-            GlazeDirection = dir,
-        };
-
-        var right = new EyeData.Eye
+        var eye = new EyeData.Eye
         {
             GlazeDirectionIsValid = validity,
             GlazeDirection = dir,
@@ -90,8 +84,8 @@ public class DesktopConsumer : ITobiiDataSource
         {
             dev._eyeData = new EyeData
             {
-                Left = left,
-                Right = right,
+                Left = eye,
+                Right = eye,
             };
         }
     }

@@ -55,7 +55,6 @@ public class Device : IDisposable
 
         logger.LogInformation("Subscribed to consumer data.");
         logger.LogInformation($"Using {(isWearable ? "wearable" : "desktop") + " mode"}");
-        // GetCapabilities(logger, _device);
 
         _wearable = isWearable ? new WearableConsumer(_device) : new DesktopConsumer(_device);
         _wearable.Subscribe();
@@ -71,25 +70,6 @@ public class Device : IDisposable
 
         // This will either be HMD or Peripheral
         return info.integration_type == "HMD";
-    }
-
-    private void GetCapabilities(ILogger logger, nint _device)
-    {
-        var capabilities = Enum.GetValues(typeof(tobii_capability_t));
-
-        foreach (tobii_capability_t capabilitity in capabilities)
-        {
-            var error = Interop.tobii_capability_supported(
-                _device,
-                capabilitity,
-                out var supported);
-            if (error != tobii_error_t.TOBII_ERROR_NO_ERROR)
-            {
-                throw new Exception("Failed to get device info: " + error);
-            }
-
-            logger.LogDebug($"Capability {capabilitity} is supported: {supported}");
-        }
     }
 
     public void Update()

@@ -1,7 +1,10 @@
 ## Tobii Eye Tracking Module for VRCFaceTracking
 
 A module for working with Tobii Eye Tracking in VRCFaceTracking.\
-Tested on [Pimax Crystal](https://pimax.com/crystal/?ref=ghostiam).
+Tested on [Pimax Crystal](https://pimax.com/crystal/?ref=ghostiam) and [Tobii 4C](https://help.tobii.com/hc/en-us/sections/360001811457-Tobii-Eye-Tracker-4C). This should also work with other HMD/Peripheral devices from Tobii, such as the:
+- HTC Vive Eye Devkit
+- Laptops with built in Tobii Eye Tracking (Alienware, etc)
+- And HTC Vive Pro Eye and HP Reverb G2 Omnicept Edition (though modules already exist for them)
 
 ### Usage
 

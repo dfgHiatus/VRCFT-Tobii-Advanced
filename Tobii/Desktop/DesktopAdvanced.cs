@@ -83,8 +83,8 @@ public class DesktopAdvanced : ITobiiDataSource
         {
             GlazeDirectionIsValid = dataRight.gaze_point_validity == tobii_validity_t.TOBII_VALIDITY_VALID,
             GlazeDirection = new Vector2(
-                Math.Clamp(dataRight.gaze_point_on_display_normalized_xy.x, -1f, 1f),
-                Math.Clamp(1f - dataRight.gaze_point_on_display_normalized_xy.y, -1f, 1f)),
+                Math.Clamp((2f * dataLeft.gaze_point_on_display_normalized_xy.x) - 1f, -1f, 1f), // 0..1 to  -1..1
+                Math.Clamp((-2f * dataLeft.gaze_point_on_display_normalized_xy.y) + 1f, -1f, 1f)), // 1..0 to  -1..1
             PupilDiameterIsValid = dataRight.pupil_validity == tobii_validity_t.TOBII_VALIDITY_VALID,
             PupilDiameterMm = dataRight.pupil_diameter_mm
         };

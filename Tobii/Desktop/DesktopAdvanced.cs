@@ -50,13 +50,13 @@ public class DesktopAdvanced : ITobiiDataSource
 
         if (res != tobii_error_t.TOBII_ERROR_NO_ERROR)
         {
-            throw new Exception("Wait for callbacks: " + res);
+            throw new Exception("Could not wait for callbacks: " + res);
         }
 
         res = Interop.tobii_device_process_callbacks(_device);
         if (res != tobii_error_t.TOBII_ERROR_NO_ERROR)
         {
-            throw new Exception("Process callbacks: " + res);
+            throw new Exception("Could not process callbacks: " + res);
         }
     }
 

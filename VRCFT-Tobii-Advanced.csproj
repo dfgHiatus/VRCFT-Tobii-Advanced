@@ -1,7 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net7.0-windows10.0.19041.0</TargetFramework>
+        <TargetFramework>net7.0</TargetFramework>
         <RootNamespace>VRCFT_Tobii_Advanced</RootNamespace>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
@@ -34,7 +34,7 @@
 
     <ItemGroup>
       <Reference Include="VRCFaceTracking.Core">
-        <HintPath>..\..\..\..\..\Program Files\WindowsApps\96ba052f-0948-44d8-86c4-a0212e4ae047_5.1.1.0_x64__d7rcq4vxghz0r\VRCFaceTracking.Core.dll</HintPath>
+        <HintPath>Libs\VRCFaceTracking.Core.dll</HintPath>
       </Reference>
     </ItemGroup>
 </Project>
